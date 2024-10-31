@@ -1,6 +1,20 @@
 import os
+import json
 
-# Liste des types de lieux
+json_file_path = './countries/france.json'
+
+with open(json_file_path, 'r', encoding='utf-8') as json_file:
+    data = json.load(json_file)
+    cities = {entry['place_name'] for entry in data if entry['country_code'] == 'FR'}
+
+paris_arrondissements = [f'Paris {i}e' for i in range(1, 20)]
+lyon_arrondissements = [f'Lyon {i}e' for i in range(1, 9)]
+marseille_arrondissements = [f'Marseille {i}e' for i in range(1, 16)]
+
+cities.update(paris_arrondissements)
+cities.update(lyon_arrondissements)
+cities.update(marseille_arrondissements)
+
 place_types = [
     'coiffeur', 'restaurant', 'atm', 'hôtel', 'bar', 'café', 'supermarché', 'pharmacie', 'banque', 'boulangerie',
     'librairie', 'cinéma', 'musée', 'parc', 'gym', 'salle de sport', 'parking', 'magasin de vêtements',
@@ -22,34 +36,12 @@ place_types = [
     'plage', 'montagne', 'forêt', 'rivière', 'lac', 'réserve naturelle'
 ]
 
-# Liste des grandes villes en France
-cities = [
-    'Marseille', 'Toulouse', 'Nice', 'Nantes', 'Strasbourg', 'Montpellier', 'Bordeaux', 'Lille',
-    'Rennes', 'Reims', 'Le Havre', 'Saint-Étienne', 'Toulon', 'Grenoble', 'Dijon', 'Angers', 'Nîmes', 'Villeurbanne',
-    'Clermont-Ferrand', 'Le Mans', 'Aix-en-Provence', 'Brest', 'Tours', 'Amiens', 'Limoges', 'Annecy', 'Perpignan',
-    'Metz', 'Besançon', 'Orléans', 'Mulhouse', 'Rouen', 'Caen', 'Nancy', 'Saint-Denis', 'Argenteuil', 'Montreuil',
-    'Roubaix', 'Dunkerque', 'Tourcoing', 'Avignon', 'Poitiers', 'Nanterre', 'Créteil', 'Versailles', 'Pau'
-]
-
-# Arrondissements
-paris_arrondissements = [f'Paris {i}e' for i in range(1, 20)]
-lyon_arrondissements = [f'Lyon {i}e' for i in range(1, 9)]
-marseille_arrondissements = [f'Marseille {i}e' for i in range(1, 16)]
-
-# Ajout des arrondissements à la liste des villes
-cities.extend(paris_arrondissements)
-cities.extend(lyon_arrondissements)
-cities.extend(marseille_arrondissements)
-
-# Chemin du fichier france.txt
 output_directory = 'countries'
 output_file = os.path.join(output_directory, 'france.txt')
 
-# Créez le dossier output s'il n'existe pas
 if not os.path.exists(output_directory):
     os.makedirs(output_directory)
 
-# Créez le fichier wordlist.txt
 with open(output_file, 'w', encoding='utf-8') as file:
     for city in cities:
         for place_type in place_types:
